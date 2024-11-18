@@ -35,3 +35,4 @@ snmpwalk -v2c -c public 192.168.0.1 1.3.6.1.2.1.1
 * Paramos el contenedor snmpd con "docker stop snmpd". El contenedor será destruido.
 * Eliminamos la red con "docker network rm snmp-net"
 
+Podemos comprobar que la limpieza ha funcionado con "docker ps -a" y "docker network ls". 
