@@ -1,26 +1,25 @@
 # Monitorización SNMP
-Creamos una red snmp-net
-```
-docker network create snmp-net
-```
-## Creación de imagen con snmp-net
-### Versión Alpine
+## Creación de imagen con snmp-net, basada en alpine
 * Dockerfile
 * Requiere snmpd.conf (la configuración del agente SNMP)
 Se construye con
 ```
 docker build -f ./Dockerfile -t snmpdalp .
 ```
-Se ejecuta con 
+Creamos una red snmp-net
+```
+docker network create snmp-net
+```
+Se ejecuta un contenedor objeto de monitorización con 
 ```
 docker run --rm -d --network snmp-net --name snmpd snmpdalp
 ````
-Accedemos a un shell en el contenedor con 
+## Monitorización desde otro contenedor
+Creamos un nuevo contenedor, que hará de "maganer", y en el mismo ejecutamos un shell:
 ```
-docker exec -it snmpd sh
+docker run --rm -it --name snmpcli --network snmp-net snmpdalp sh
 ```
-### snmpwalk
-Ejecutamos en el shell del contenedor
+Desde ese shell del contenedor-manager, ejecutamos comandos para acceder a variables SNMP en el contenedor observado:
 ```
 snmpwalk -v2c -c public snmpd .1.3.6.1.2.1.1
 snmpwalk -v2c -c public -On snmpd .1.3.6.1.2.1.1
