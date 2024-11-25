@@ -95,11 +95,17 @@ docker run --rm -d --name snmpd -p 161:161/udp --network zabbix-net snmpdalp
 ```
 
 ## Limpieza
+Con estos comandos eliminamos contenedores y red:
+
 ```
 docker stop mysql-server zabbix-server-mysql zabbix-web-nginx-mysql
 docker rm mysql-server zabbix-server-mysql zabbix-web-nginx-mysql
 docker stop zagent2
 docker stop snmpd
 docker network rm zabbix-net
+```
+Sin embargo, quedan creados una serie de volúmenes usados por Zabbix. Podemos borrarlos manualmente, o hacerlo de forma rápida (y peligrosa):
+```
+docker volume prune -a
 ```
 
